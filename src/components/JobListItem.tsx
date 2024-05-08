@@ -1,15 +1,15 @@
-import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
-import { formatMoney, relativeDate } from "@/lib/utils";
 import { Job } from "@prisma/client";
-import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 import Image from "next/image";
+import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
+import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
+import { formatMoney, relativeDate } from "@/lib/utils";
 import Badge from "./Badge";
 
 interface JobListItemProps {
   job: Job;
 }
 
-export default function JobListItem({
+const JobListItem = ({
   job: {
     title,
     companyName,
@@ -20,35 +20,33 @@ export default function JobListItem({
     companyLogoUrl,
     createdAt,
   },
-}: JobListItemProps) {
+}: JobListItemProps) => {
   return (
-    <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
+    <article className="flex gap-2 rounded-lg border p-5 hover:bg-muted/60">
       <Image
-        src={companyLogoUrl || companyLogoPlaceholder}
-        alt={`${companyName} logo`}
-        width={100}
+        src={companyLogoUrl ?? companyLogoPlaceholder}
+        alt={`${companyName} Logo`}
         height={100}
+        width={100}
         className="self-center rounded-lg"
       />
       <div className="flex-grow space-y-3">
-        <div>
-          <h2 className="text-xl font-medium">{title}</h2>
-          <p className="text-muted-foreground">{companyName}</p>
-        </div>
+        <div className="text-xl font-medium">{title}</div>
+        <p className="text-muted-foreground">{companyName}</p>
         <div className="text-muted-foreground">
           <p className="flex items-center gap-1.5 sm:hidden">
             <Briefcase size={16} className="shrink-0" />
             {type}
           </p>
-          <p className="flex items-center gap-1.5">
+          <p className="flex items-center gap-1.5 ">
             <MapPin size={16} className="shrink-0" />
             {locationType}
           </p>
-          <p className="flex items-center gap-1.5">
+          <p className="flex items-center gap-1.5 ">
             <Globe2 size={16} className="shrink-0" />
             {location || "Worldwide"}
           </p>
-          <p className="flex items-center gap-1.5">
+          <p className="flex items-center gap-1.5 ">
             <Banknote size={16} className="shrink-0" />
             {formatMoney(salary)}
           </p>
@@ -58,7 +56,7 @@ export default function JobListItem({
           </p>
         </div>
       </div>
-      <div className="hidden shrink-0 flex-col items-end justify-between sm:flex">
+      <div className="hidden shrink-0 flex-col items-end justify-between sm:flex ">
         <Badge>{type}</Badge>
         <span className="flex items-center gap-1.5 text-muted-foreground">
           <Clock size={16} />
@@ -67,4 +65,6 @@ export default function JobListItem({
       </div>
     </article>
   );
-}
+};
+
+export default JobListItem;

@@ -2,11 +2,13 @@
 
 import H1 from "@/components/ui/h1";
 
-export default function Error() {
+const Error = () => {
   return (
-    <main className="m-auto my-10 max-w-5xl space-y-5 px-3 text-center">
+    <main className="m-auto my-16 max-w-5xl space-y-5 px-3 text-center">
       <H1>Error</H1>
-      <p>An unexpected error occurred.</p>
+      <p>An unexpected error occured</p>
     </main>
   );
-}
+};
+
+export default Error;

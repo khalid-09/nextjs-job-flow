@@ -1,8 +1,9 @@
 "use client";
 
-import LoadingButton from "@/components/LoadingButton";
-import LocationInput from "@/components/LocationInput";
-import RichTextEditor from "@/components/RichTextEditor";
+import H1 from "@/components/ui/h1";
+import { CreateJobValues, createJobSchema } from "@/lib/validation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -11,19 +12,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import H1 from "@/components/ui/h1";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Select from "@/components/ui/select";
 import { jobTypes, locationTypes } from "@/lib/job-types";
-import { CreateJobValues, createJobSchema } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import LocationInput from "@/components/LocationInput";
 import { X } from "lucide-react";
-import { draftToMarkdown } from "markdown-draft-js";
-import { useForm } from "react-hook-form";
-import { createJobPosting } from "./actions";
+import { Label } from "@/components/ui/label";
 
-export default function NewJobForm() {
+const NewJobForm = () => {
   const form = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
   });
@@ -38,28 +34,16 @@ export default function NewJobForm() {
     formState: { isSubmitting },
   } = form;
 
-  async function onSubmit(values: CreateJobValues) {
-    const formData = new FormData();
-
-    Object.entries(values).forEach(([key, value]) => {
-      if (value) {
-        formData.append(key, value);
-      }
-    });
-
-    try {
-      await createJobPosting(formData);
-    } catch (error) {
-      alert("Something went wrong, please try again.");
-    }
-  }
+  const onSubmit = async (values: CreateJobValues) => {
+    alert(JSON.stringify(values));
+  };
 
   return (
     <main className="m-auto my-10 max-w-3xl space-y-10">
       <div className="space-y-5 text-center">
         <H1>Find your perfect developer</H1>
         <p className="text-muted-foreground">
-          Get your job posting seen by thousands of job seekers.
+          Get your job posting seen by thousand of job seekers.
         </p>
       </div>
       <div className="space-y-6 rounded-lg border p-4">
@@ -71,8 +55,8 @@ export default function NewJobForm() {
         </div>
         <Form {...form}>
           <form
-            className="space-y-4"
             noValidate
+            className="space-y-4"
             onSubmit={handleSubmit(onSubmit)}
           >
             <FormField
@@ -80,9 +64,9 @@ export default function NewJobForm() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Job title</FormLabel>
+                  <FormLabel>Job Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Frontend Developer" {...field} />
+                    <Input placeholder="Eg: Frontend Developer" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,14 +77,14 @@ export default function NewJobForm() {
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Job type</FormLabel>
+                  <FormLabel>Job Type</FormLabel>
                   <FormControl>
                     <Select {...field} defaultValue="">
                       <option value="" hidden>
-                        Select an option
+                        Select and option
                       </option>
                       {jobTypes.map((jobType) => (
-                        <option key={jobType} value={jobType}>
+                        <option value={jobType} key={jobType}>
                           {jobType}
                         </option>
                       ))}
@@ -128,7 +112,7 @@ export default function NewJobForm() {
               name="companyLogo"
               render={({ field: { value, ...fieldValues } }) => (
                 <FormItem>
-                  <FormLabel>Company logo</FormLabel>
+                  <FormLabel>Company Logo</FormLabel>
                   <FormControl>
                     <Input
                       {...fieldValues}
@@ -149,23 +133,14 @@ export default function NewJobForm() {
               name="locationType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <FormLabel>Location Type</FormLabel>
                   <FormControl>
-                    <Select
-                      {...field}
-                      defaultValue=""
-                      onChange={(e) => {
-                        field.onChange(e);
-                        if (e.currentTarget.value === "Remote") {
-                          trigger("location");
-                        }
-                      }}
-                    >
+                    <Select {...field} defaultValue="">
                       <option value="" hidden>
-                        Select an option
+                        Select and option
                       </option>
                       {locationTypes.map((locationType) => (
-                        <option key={locationType} value={locationType}>
+                        <option value={locationType} key={locationType}>
                           {locationType}
                         </option>
                       ))}
@@ -191,9 +166,9 @@ export default function NewJobForm() {
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
-                        onClick={() => {
-                          setValue("location", "", { shouldValidate: true });
-                        }}
+                        onClick={() =>
+                          setValue("location", "", { shouldValidate: true })
+                        }
                       >
                         <X size={20} />
                       </button>
@@ -206,7 +181,7 @@ export default function NewJobForm() {
             />
             <div className="space-y-2">
               <Label htmlFor="applicationEmail">How to apply</Label>
-              <div className="flex justify-between">
+              <div className="flex items-center justify-between">
                 <FormField
                   control={control}
                   name="applicationEmail"
@@ -249,45 +224,11 @@ export default function NewJobForm() {
                 />
               </div>
             </div>
-            <FormField
-              control={control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <Label onClick={() => setFocus("description")}>
-                    Description
-                  </Label>
-                  <FormControl>
-                    <RichTextEditor
-                      onChange={(draft) =>
-                        field.onChange(draftToMarkdown(draft))
-                      }
-                      ref={field.ref}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="salary"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Salary</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <LoadingButton type="submit" loading={isSubmitting}>
-              Submit
-            </LoadingButton>
           </form>
         </Form>
       </div>
     </main>
   );
-}
+};
+
+export default NewJobForm;

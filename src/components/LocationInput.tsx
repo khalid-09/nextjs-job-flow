@@ -1,7 +1,6 @@
-import citiesList from "@/lib/cities-list";
 import { forwardRef, useMemo, useState } from "react";
 import { Input } from "./ui/input";
-
+import citiesList from "@/lib/cities-list";
 interface LocationInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   onLocationSelected: (location: string) => void;
@@ -16,7 +15,6 @@ export default forwardRef<HTMLInputElement, LocationInputProps>(
       if (!locationSearchInput.trim()) return [];
 
       const searchWords = locationSearchInput.split(" ");
-
       return citiesList
         .map((city) => `${city.name}, ${city.subcountry}, ${city.country}`)
         .filter(
@@ -31,23 +29,24 @@ export default forwardRef<HTMLInputElement, LocationInputProps>(
 
     return (
       <div className="relative">
+        {" "}
         <Input
-          placeholder="Search for a city..."
+          placeholder="Search for a city"
           type="search"
+          {...props}
+          ref={ref}
           value={locationSearchInput}
           onChange={(e) => setLocationSearchInput(e.target.value)}
           onFocus={() => setHasFocus(true)}
           onBlur={() => setHasFocus(false)}
-          {...props}
-          ref={ref}
         />
         {locationSearchInput.trim() && hasFocus && (
           <div className="absolute z-20 w-full divide-y rounded-b-lg border-x border-b bg-background shadow-xl">
-            {!cities.length && <p className="p-3">No results found.</p>}
+            {!cities.length && <p className="p-3">No results found</p>}
             {cities.map((city) => (
               <button
-                key={city}
                 className="block w-full p-2 text-start"
+                key={city}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   onLocationSelected(city);

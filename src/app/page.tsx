@@ -1,36 +1,27 @@
 import JobFilterSidebar from "@/components/JobFilterSidebar";
+import JobListItem from "@/components/JobListItem";
 import JobResults from "@/components/JobResults";
 import H1 from "@/components/ui/h1";
 import { JobFilterValues } from "@/lib/validation";
 import { Metadata } from "next";
 
-interface PageProps {
-  searchParams: {
-    q?: string;
-    type?: string;
-    location?: string;
-    remote?: string;
-    page?: string;
-  };
-}
-
-function getTitle({ q, type, location, remote }: JobFilterValues) {
+const getTitle = ({ q, type, location, remote }: JobFilterValues) => {
   const titlePrefix = q
     ? `${q} jobs`
     : type
-      ? `${type} developer jobs`
+      ? ` ${type} Developer Jobs`
       : remote
-        ? "Remote developer jobs"
-        : "All developer jobs";
+        ? "Remote Developer Jobs"
+        : "All developer Jobs";
 
   const titleSuffix = location ? ` in ${location}` : "";
 
   return `${titlePrefix}${titleSuffix}`;
-}
+};
 
-export function generateMetadata({
+export const generateMetadata = ({
   searchParams: { q, type, location, remote },
-}: PageProps): Metadata {
+}: PageProps): Metadata => {
   return {
     title: `${getTitle({
       q,
@@ -39,11 +30,18 @@ export function generateMetadata({
       remote: remote === "true",
     })} | Flow Jobs`,
   };
+};
+
+interface PageProps {
+  searchParams: {
+    q?: string;
+    type?: string;
+    location?: string;
+    remote?: string;
+  };
 }
 
-export default async function Home({
-  searchParams: { q, type, location, remote, page },
-}: PageProps) {
+const Home = ({ searchParams: { q, type, location, remote } }: PageProps) => {
   const filterValues: JobFilterValues = {
     q,
     type,
@@ -57,13 +55,12 @@ export default async function Home({
         <H1>{getTitle(filterValues)}</H1>
         <p className="text-muted-foreground">Find your dream job.</p>
       </div>
-      <section className="flex flex-col gap-4 md:flex-row">
+      <section className="flex flex-col gap-4 md:flex-row ">
         <JobFilterSidebar defaultValues={filterValues} />
-        <JobResults
-          filterValues={filterValues}
-          page={page ? parseInt(page) : undefined}
-        />
+        <JobResults filterValues={filterValues} />
       </section>
     </main>
   );
-}
+};
+
+export default Home;
