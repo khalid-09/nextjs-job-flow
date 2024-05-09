@@ -22,8 +22,8 @@ export function relativeDate(from: Date) {
 export function toSlug(str: string) {
   return str
     .toLowerCase()
-    .replace(/ /g, "-")
-    .replace(/[^\w-]+/g, "");
+    .replace(/ /g, "-") // to replace spaces with dashes
+    .replace(/[^\w-]+/g, ""); // to replace multiple spaces with a single space
 }
 
 export function isAdmin(user: UserResource | User) {

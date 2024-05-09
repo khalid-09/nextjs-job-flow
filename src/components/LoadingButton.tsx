@@ -6,17 +6,15 @@ interface LoadingButtonProps
   loading: boolean;
 }
 
-export default function LoadingButton({
-  children,
-  loading,
-  ...props
-}: LoadingButtonProps) {
+const LoadingButton = ({ children, loading, ...props }: LoadingButtonProps) => {
   return (
     <Button {...props} disabled={props.disabled || loading}>
       <span className="flex items-center justify-center gap-1">
-        {loading && <Loader2 size={16} className="animate-spin" />}
+        {loading && <Loader2 className="animate-spin" size={16} />}
         {children}
       </span>
     </Button>
   );
-}
+};
+
+export default LoadingButton;
