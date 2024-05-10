@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import Select from "@/components/ui/select";
 import { jobTypes, locationTypes } from "@/lib/job-types";
 import LocationInput from "@/components/LocationInput";
-import { AlignRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/RichTextEditor";
 import { draftToMarkdown } from "markdown-draft-js";

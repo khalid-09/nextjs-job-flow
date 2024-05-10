@@ -1,5 +1,4 @@
 import JobFilterSidebar from "@/components/JobFilterSidebar";
-import JobListItem from "@/components/JobListItem";
 import JobResults from "@/components/JobResults";
 import H1 from "@/components/ui/h1";
 import { JobFilterValues } from "@/lib/validation";
